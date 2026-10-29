@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://florian.github.io/7day-income-strategy/sitemap.xml
+
+# Disallow admin/tracking endpoints
+Disallow: /api/
+Disallow: /go/
+Disallow: /dashboard

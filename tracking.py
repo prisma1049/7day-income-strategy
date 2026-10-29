@@ -55,6 +55,26 @@ CREATE INDEX IF NOT EXISTS idx_clicks_program ON clicks(affiliate_program);
 CREATE INDEX IF NOT EXISTS idx_clicks_article ON clicks(article_slug);
 CREATE INDEX IF NOT EXISTS idx_conversions_timestamp ON conversions(timestamp);
 CREATE INDEX IF NOT EXISTS idx_conversions_program ON conversions(affiliate_program);
+
+CREATE TABLE IF NOT EXISTS subscribers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    timestamp TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    source TEXT,
+    utm_source TEXT,
+    utm_medium TEXT,
+    utm_campaign TEXT,
+    utm_content TEXT,
+    confirmed INTEGER DEFAULT 0,
+    confirmation_token TEXT,
+    ip_hash TEXT,
+    user_agent TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_subscribers_email ON subscribers(email);
+CREATE INDEX IF NOT EXISTS idx_subscribers_timestamp ON subscribers(timestamp);
+CREATE INDEX IF NOT EXISTS idx_subscribers_token ON subscribers(confirmation_token);
+
 """
 
 AFFILIATE_PROGRAMS = {

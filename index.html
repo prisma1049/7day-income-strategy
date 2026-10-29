@@ -20,6 +20,11 @@
         .stat-value {font-size: 1.8rem; font-weight: bold; color: #007bff;}
         .stat-label {font-size: 0.85rem; color: #666;}
         .disclaimer {background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 15px; margin: 30px 0; font-size: 0.85rem;}
+        .cta-button {display: inline-block; background: #007bff; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; margin: 10px 5px; transition: background 0.2s;}
+        .cta-button:hover {background: #0056b3; color: white;}
+        .cta-button.secondary {background: #28a745;}
+        .cta-button.secondary:hover {background: #1e7e34;}
+        .tracking-notice {background: #e7f3ff; border: 1px solid #007bff; border-radius: 8px; padding: 15px; margin: 20px 0; font-size: 0.85rem;}
     </style>
 </head>
 <body>
@@ -28,21 +33,21 @@
         <p>Ein Experiment: AI-Tool Affiliate Marketing ohne jeden Kapitaleinsatz. 7 Tage, transparente Dokumentation, echte Ergebnisse.</p>
     </header>
     
-    <div class="stats">
+    <div class="stats" id="stats">
         <div class="stat-item">
-            <div class="stat-value">7</div>
+            <div class="stat-value" id="stat-articles">7</div>
             <div class="stat-label">Artikel veröffentlicht</div>
         </div>
         <div class="stat-item">
-            <div class="stat-value">3</div>
+            <div class="stat-value" id="stat-programs">4</div>
             <div class="stat-label">Affiliate-Programme</div>
         </div>
         <div class="stat-item">
-            <div class="stat-value">7</div>
+            <div class="stat-value" id="stat-days">7</div>
             <div class="stat-label">Tage Laufzeit</div>
         </div>
         <div class="stat-item">
-            <div class="stat-value">0 €</div>
+            <div class="stat-value" id="stat-investment">0 €</div>
             <div class="stat-label">Investment</div>
         </div>
     </div>
@@ -51,6 +56,10 @@
         <strong>Hinweis:</strong> Dies ist ein Experiment ohne Kapital. Alle Links sind Affiliate-Links. Provisionen werden transparent dokumentiert. Keine Garantie für Einnahmen.
     </div>
     
+    <div class="tracking-notice" id="tracking-notice">
+        <strong>📊 Tracking aktiv:</strong> Diese Seite nutzt datenschutzfreundliches Tracking (keine Cookies, keine personenbezogenen Daten). Klicks auf Affiliate-Links werden anonym gezählt zur Erfolgsmessung.
+    </div>
+
     <h2>📝 Veröffentlichte Reviews</h2>
     
     <article class="post-card">
@@ -63,6 +72,8 @@
             <span class="tag">#No-Code</span>
             <span class="tag">#AffiliateMarketing</span>
         </div>
+        <a class="cta-button" href="/go/mixo/index" target="_blank" rel="nofollow sponsored" data-affiliate="mixo" data-track="click">Zu Mixo (50% Provision)</a>
+        <a class="cta-button secondary" href="mixo-review.html">Review lesen</a>
     </article>
     
     <article class="post-card">
@@ -75,6 +86,8 @@
             <span class="tag">#KI-Audio</span>
             <span class="tag">#VoiceCloning</span>
         </div>
+        <a class="cta-button" href="/go/elevenlabs/index" target="_blank" rel="nofollow sponsored" data-affiliate="elevenlabs" data-track="click">Zu ElevenLabs (50% recurring)</a>
+        <a class="cta-button secondary" href="elevenlabs-review.html">Review lesen</a>
     </article>
     
     <article class="post-card">
@@ -87,6 +100,8 @@
             <span class="tag">#KI-Inference</span>
             <span class="tag">#Cloud-Computing</span>
         </div>
+        <a class="cta-button" href="/go/runpod/index" target="_blank" rel="nofollow sponsored" data-affiliate="runpod" data-track="click">Zu RunPod (recurring)</a>
+        <a class="cta-button secondary" href="runpod-review.html">Review lesen</a>
     </article>
     
     <article class="post-card">
@@ -99,12 +114,68 @@
             <span class="tag">#ContentPlan</span>
         </div>
     </article>
-    
+
     <hr style="margin: 40px 0;">
     <p style="text-align: center; color: #666; font-size: 0.9rem;">
-        <a href="https://github.com/" target="_blank" style="color: #007bff;">GitHub Repository</a> · 
+        <a href="https://github.com/florian/7day-income-strategy" target="_blank" style="color: #007bff;">GitHub Repository</a> · 
         <a href="https://twitter.com/" target="_blank" style="color: #007bff;">X/Twitter Updates</a> · 
         Transparentes Experiment · 0 € Investment
     </p>
+
+    <script>
+        (function() {
+            'use strict';
+            
+            // Simple privacy-friendly analytics
+            const endpoint = '/api/track';
+            const sessionId = sessionStorage.getItem('sid') || crypto.randomUUID();
+            sessionStorage.setItem('sid', sessionId);
+            
+            function track(event, data = {}) {
+                const payload = {
+                    event,
+                    session: sessionId,
+                    url: window.location.pathname,
+                    referrer: document.referrer || 'direct',
+                    timestamp: new Date().toISOString(),
+                    ...data
+                };
+                
+                // Send via sendBeacon (non-blocking, works on unload)
+                if (navigator.sendBeacon) {
+                    navigator.sendBeacon(endpoint, JSON.stringify(payload));
+                } else {
+                    fetch(endpoint, {
+                        method: 'POST',
+                        body: JSON.stringify(payload),
+                        headers: {'Content-Type': 'application/json'},
+                        keepalive: true
+                    }).catch(() => {});
+                }
+            }
+            
+            // Track page view
+            track('pageview');
+            
+            // Track affiliate clicks
+            document.querySelectorAll('[data-affiliate]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    track('affiliate_click', {
+                        program: this.dataset.affiliate,
+                        destination: this.href
+                    });
+                });
+            });
+            
+            // Track time on page
+            let startTime = Date.now();
+            window.addEventListener('beforeunload', () => {
+                track('pageview_end', {duration_ms: Date.now() - startTime});
+            });
+            
+            // Expose for manual tracking
+            window.track = track;
+        })();
+    </script>
 </body>
 </html>

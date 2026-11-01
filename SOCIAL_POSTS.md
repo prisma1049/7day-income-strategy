@@ -2,7 +2,7 @@ SOCIAL MEDIA POSTS FOR GPU CLOUD COMPARISON ARTICLE
 =====================================================
 
 Article: RunPod vs. Vast.ai vs. Lambda: Günstigste GPU Cloud 2026
-URL: https://florian.github.io/7day-income-strategy/runpod-vs-vast-vs-lambda.html
+URL: https://prisma1049.github.io/7day-income-strategy/runpod-vs-vast-vs-lambda.html
 
 AFFILIATE LINKS (Tracked per Platform)
 ======================================
@@ -10,27 +10,27 @@ AFFILIATE LINKS (Tracked per Platform)
 REDDIT:
 - RunPod: https://runpod.io?utm_source=reddit&utm_medium=social&utm_campaign=7day_sprint&utm_content=reddit_gpu_comparison&ref=7day_sprint
 - Vast.ai: https://vast.ai?utm_source=reddit&utm_medium=social&utm_campaign=7day_sprint&utm_content=reddit_gpu_comparison&ref=7day_sprint
-- Article: https://florian.github.io/7day-income-strategy/runpod-vs-vast-vs-lambda.html?utm_source=reddit&utm_medium=social&utm_campaign=7day_sprint&utm_content=reddit_gpu_comparison
+- Article: https://prisma1049.github.io/7day-income-strategy/runpod-vs-vast-vs-lambda.html?utm_source=reddit&utm_medium=social&utm_campaign=7day_sprint&utm_content=reddit_gpu_comparison
 
 TWITTER/X:
 - RunPod: https://runpod.io?utm_source=twitter&utm_medium=social&utm_campaign=7day_sprint&utm_content=twitter_gpu_comparison&ref=7day_sprint
 - Vast.ai: https://vast.ai?utm_source=twitter&utm_medium=social&utm_campaign=7day_sprint&utm_content=twitter_gpu_comparison&ref=7day_sprint
-- Article: https://florian.github.io/7day-income-strategy/runpod-vs-vast-vs-lambda.html?utm_source=twitter&utm_medium=social&utm_campaign=7day_sprint&utm_content=twitter_gpu_comparison
+- Article: https://prisma1049.github.io/7day-income-strategy/runpod-vs-vast-vs-lambda.html?utm_source=twitter&utm_medium=social&utm_campaign=7day_sprint&utm_content=twitter_gpu_comparison
 
 LINKEDIN:
 - RunPod: https://runpod.io?utm_source=linkedin&utm_medium=social&utm_campaign=7day_sprint&utm_content=linkedin_gpu_comparison&ref=7day_sprint
 - Vast.ai: https://vast.ai?utm_source=linkedin&utm_medium=social&utm_campaign=7day_sprint&utm_content=linkedin_gpu_comparison&ref=7day_sprint
-- Article: https://florian.github.io/7day-income-strategy/runpod-vs-vast-vs-lambda.html?utm_source=linkedin&utm_medium=social&utm_campaign=7day_sprint&utm_content=linkedin_gpu_comparison
+- Article: https://prisma1049.github.io/7day-income-strategy/runpod-vs-vast-vs-lambda.html?utm_source=linkedin&utm_medium=social&utm_campaign=7day_sprint&utm_content=linkedin_gpu_comparison
 
 INDIE HACKERS:
 - RunPod: https://runpod.io?utm_source=indiehackers&utm_medium=social&utm_campaign=7day_sprint&utm_content=indiehackers_gpu_comparison&ref=7day_sprint
 - Vast.ai: https://vast.ai?utm_source=indiehackers&utm_medium=social&utm_campaign=7day_sprint&utm_content=indiehackers_gpu_comparison&ref=7day_sprint
-- Article: https://florian.github.io/7day-income-strategy/runpod-vs-vast-vs-lambda.html?utm_source=indiehackers&utm_medium=social&utm_campaign=7day_sprint&utm_content=indiehackers_gpu_comparison
+- Article: https://prisma1049.github.io/7day-income-strategy/runpod-vs-vast-vs-lambda.html?utm_source=indiehackers&utm_medium=social&utm_campaign=7day_sprint&utm_content=indiehackers_gpu_comparison
 
 HACKER NEWS:
 - RunPod: https://runpod.io?utm_source=hackernews&utm_medium=social&utm_campaign=7day_sprint&utm_content=hackernews_gpu_comparison&ref=7day_sprint
 - Vast.ai: https://vast.ai?utm_source=hackernews&utm_medium=social&utm_campaign=7day_sprint&utm_content=hackernews_gpu_comparison&ref=7day_sprint
-- Article: https://florian.github.io/7day-income-strategy/runpod-vs-vast-vs-lambda.html?utm_source=hackernews&utm_medium=social&utm_campaign=7day_sprint&utm_content=hackernews_gpu_comparison
+- Article: https://prisma1049.github.io/7day-income-strategy/runpod-vs-vast-vs-lambda.html?utm_source=hackernews&utm_medium=social&utm_campaign=7day_sprint&utm_content=hackernews_gpu_comparison
 
 
 POST CONTENT PER PLATFORM
@@ -63,7 +63,7 @@ Spent the week testing the three main GPU cloud options for AI training/inferenc
 
 Full comparison with price tables, decision matrix, cost examples (1 week 8×A100 = ~$1,600 on RunPod → ~$320 recurring affiliate):
 
-🔗 [Article with tracked links](https://florian.github.io/7day-income-strategy/runpod-vs-vast-vs-lambda.html?utm_source=reddit&utm_medium=social&utm_campaign=7day_sprint&utm_content=reddit_gpu_comparison)
+🔗 [Article with tracked links](https://prisma1049.github.io/7day-income-strategy/runpod-vs-vast-vs-lambda.html?utm_source=reddit&utm_medium=social&utm_campaign=7day_sprint&utm_content=reddit_gpu_comparison)
 
 Direct affiliate links (disclosure: these are affiliate links):
 - RunPod (20% recurring): https://runpod.io?utm_source=reddit&utm_medium=social&utm_campaign=7day_sprint&utm_content=reddit_gpu_comparison&ref=7day_sprint
@@ -115,7 +115,7 @@ Real cost example: 1 week fine-tuning (8×A100, 24/7)
 • Lambda: ~$2,000-2,700 → $0 (no program)
 
 Full breakdown + decision matrix:
-https://florian.github.io/7day-income-strategy/runpod-vs-vast-vs-lambda.html?utm_source=twitter&utm_medium=social&utm_campaign=7day_sprint&utm_content=twitter_gpu_comparison
+https://prisma1049.github.io/7day-income-strategy/runpod-vs-vast-vs-lambda.html?utm_source=twitter&utm_medium=social&utm_campaign=7day_sprint&utm_content=twitter_gpu_comparison
 
 TWEET 6/6:
 Part of my 7-day zero-capital affiliate experiment (0€ investment, transparent tracking).
@@ -185,7 +185,7 @@ Building an AI side project? Need GPU compute? Here's the affiliate breakdown fo
 📈 **Strategy:** RunPod for dev content (high LTV), Vast.ai for budget content (high conversion), Lambda as "professional baseline" in comparisons.
 
 My full comparison with price tables, cost models, and tracked affiliate links:
-https://florian.github.io/7day-income-strategy/runpod-vs-vast-vs-lambda.html?utm_source=indiehackers&utm_medium=social&utm_campaign=7day_sprint&utm_content=indiehackers_gpu_comparison
+https://prisma1049.github.io/7day-income-strategy/runpod-vs-vast-vs-lambda.html?utm_source=indiehackers&utm_medium=social&utm_campaign=7day_sprint&utm_content=indiehackers_gpu_comparison
 
 Part of my 7-day zero-capital income experiment. Tracking everything transparently.
 
@@ -207,7 +207,7 @@ Includes: Price tables (RTX 4090/A100/H100), feature matrix, decision guide, cos
 
 No sponsorship, part of a transparent 7-day zero-capital affiliate marketing experiment.
 
-https://florian.github.io/7day-income-strategy/runpod-vs-vast-vs-lambda.html?utm_source=hackernews&utm_medium=social&utm_campaign=7day_sprint&utm_content=hackernews_gpu_comparison
+https://prisma1049.github.io/7day-income-strategy/runpod-vs-vast-vs-lambda.html?utm_source=hackernews&utm_medium=social&utm_campaign=7day_sprint&utm_content=hackernews_gpu_comparison
 
 
 === TRACKING NOTES ===
@@ -223,7 +223,7 @@ https://florian.github.io/7day-income-strategy/runpod-vs-vast-vs-lambda.html?utm
 3. Post to LinkedIn
 4. Post to Indie Hackers
 5. Submit to Hacker News
-6. Monitor dashboard at https://florian.github.io/7day-income-strategy/dashboard for clicks by source
+6. Monitor dashboard at https://prisma1049.github.io/7day-income-strategy/dashboard for clicks by source
 7. Log results in tracking database
 
 === X/TWITTER SETUP REQUIRED ===

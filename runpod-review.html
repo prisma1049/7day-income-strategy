@@ -53,6 +53,11 @@
         li {margin: 8px 0;}
         .tags {margin-top: 30px; font-size: 0.85rem;}
         .tag {background: #e9ecef; padding: 4px 10px; border-radius: 12px; margin-right: 8px; display: inline-block;}
+        .cta-button {display: inline-block; background: #007bff; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; margin: 10px 5px; transition: background 0.2s;}
+        .cta-button:hover {background: #0056b3; color: white;}
+        .cta-button.secondary {background: #28a745;}
+        .cta-button.secondary:hover {background: #1e7e34;}
+        .cta-box {background: #e7f3ff; border: 1px solid #007bff; border-radius: 8px; padding: 20px; margin: 30px 0; text-align: center;}
     </style>
 </head>
 <body>
@@ -70,14 +75,26 @@
             <li>Persistent Storage & Network Volumes</li>
             <li>Serverless Endpoints für Inference-APIs</li>
         </ul>
-        
+
+        <div class="cta-box" style="background: #fff3cd; border-color: #ffc107;">
+            <p style="margin-bottom: 10px; font-weight: 600;">Deine erste GPU-Instance in 60 Sekunden</p>
+            <p style="margin-bottom: 15px; color: #555;">$10 Startguthaben. RTX 4090, A100, H100 – per Sekunde abgerechnet.</p>
+            <a class="cta-button" 
+               href="https://runpod.io?ref=7day_sprint&utm_source=organic&utm_medium=article&utm_campaign=7day_sprint&utm_content=runpod-review_mid"
+               target="_blank" rel="nofollow sponsored" 
+               data-affiliate="runpod" data-article="runpod-review" 
+               data-utm-source="organic" data-utm-medium="article" data-utm-campaign="7day_sprint" data-utm-content="runpod-review_mid">Credit einlösen</a>
+        </div>
+
         <h2>Pro</h2>
         <ul>
             <li>Extrem günstig vs. Hyperscaler</li>
             <li>Flexibel (Sekunden-Abrechnung)</li>
             <li>Gute Community-Templates</li>
             <li>API & CLI für Automatisierung</li>
-        </ul>
+        
+        
+</ul>
         
         <h2>Contra</h2>
         <ul>
@@ -90,13 +107,17 @@
         <h2>Fazit</h2>
         <p>Für Indie-Entwickler, Startups und Forscher ist RunPod die beste Wahl für GPU-Compute. Das Affiliate-Programm (recurring) passt perfekt zu Tech-Content für Entwickler.</p>
         
-        
-        <h2>Jetzt testen</h2>
-        <div style="display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0;">
-            <a href="/go/runpod/runpod-review" style="display: inline-block; background: #007bff; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; transition: background 0.2s;">RunPod ausprobieren →</a>
-            <a href="/go/vast_ai/runpod-review" style="display: inline-block; background: #007bff; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; transition: background 0.2s;">Vast.ai ausprobieren →</a>
+        <div class="cta-box">
+            <p style="margin-bottom: 15px; font-weight: 600;">GPU-Power ab $0.34/Std – per Sekunde abgerechnet</p>
+            <a class="cta-button" 
+               href="https://runpod.io?ref=7day_sprint&utm_source=organic&utm_medium=article&utm_campaign=7day_sprint&utm_content=runpod-review"
+               target="_blank" rel="nofollow sponsored" 
+               data-affiliate="runpod" data-article="runpod-review" 
+               data-utm-source="organic" data-utm-medium="article" data-utm-campaign="7day_sprint" data-utm-content="runpod-review_main">RunPod $10 Credit sichern →</a>
+            <a class="cta-button secondary" href="runpod-review.html">Vast.ai vergleichen</a>
         </div>
-<div class="disclosure">
+        
+        <div class="disclosure">
             <strong>Affiliate-Disclosure:</strong> Dieser Beitrag enthält Affiliate-Links. Wenn Sie über diese Links die Software erwerben, erhalte ich eine Provision – für Sie entstehen keine zusätzlichen Kosten. Vielen Dank für Ihre Unterstützung!
         </div>
         
@@ -108,6 +129,125 @@
             <span class="tag">#AffiliateMarketing</span>
             <span class="tag">#2026</span>
         </div>
+    
+
+        <!-- Email Capture in Article -->
+        <section class="email-capture-article" style="background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 8px; padding: 30px; margin: 40px 0; text-align: center;">
+            <h3 style="margin: 0 0 10px; color: #1a1a1a;">📧 GPU-Kostenrechner (Sheet) gratis</h3>
+            <p style="margin: 0 0 20px; color: #555;">Exklusiv für Leser dieses Artikels – direkt ins Postfach.</p>
+            <form id="email-form-article" style="display: flex; gap: 10px; max-width: 400px; margin: 0 auto; flex-wrap: wrap; justify-content: center;">
+                <input type="email" name="email" placeholder="deine@email.de" required autocomplete="email" style="flex: 1; min-width: 200px; padding: 12px 16px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 1rem;">
+                <button type="submit" class="cta-button" style="padding: 12px 24px;">Gratis sichern</button>
+            </form>
+            <p id="email-message-article" style="margin: 12px 0 0; font-size: 0.85rem; min-height: 20px;"></p>
+            <p style="margin: 12px 0 0; font-size: 0.75rem; color: #888;">Kein Spam. Jederzeit abmeldbar. <a href="/lead-magnet/" style="color: #007bff;">Guide auch ohne Anmeldung lesen</a></p>
+        </section>
     </article>
+
+    <script>
+        (function() {
+            'use strict';
+            const endpoint = '/api/track';
+            const sessionId = sessionStorage.getItem('sid') || crypto.randomUUID();
+            sessionStorage.setItem('sid', sessionId);
+            
+            function track(event, data = {}) {
+                const payload = {
+                    event,
+                    session: sessionId,
+                    url: window.location.pathname,
+                    referrer: document.referrer || 'direct',
+                    timestamp: new Date().toISOString(),
+                    ...data
+                };
+                if (navigator.sendBeacon) {
+                    navigator.sendBeacon(endpoint, JSON.stringify(payload));
+                } else {
+                    fetch(endpoint, {
+                        method: 'POST',
+                        body: JSON.stringify(payload),
+                        headers: {'Content-Type': 'application/json'},
+                        keepalive: true
+                    }).catch(() => {});
+                }
+            }
+            
+            track('pageview');
+            
+            document.querySelectorAll('[data-affiliate]').forEach(link => {
+                link.addEventListener('click', function() {
+                    track('affiliate_click', {
+                        program: this.dataset.affiliate,
+                        article: this.dataset.article,
+                        utm_source: this.dataset.utmSource,
+                        utm_medium: this.dataset.utmMedium,
+                        utm_campaign: this.dataset.utmCampaign,
+                        utm_content: this.dataset.utmContent,
+                        destination: this.href
+                    });
+                });
+            });
+            
+            let startTime = Date.now();
+            window.addEventListener('beforeunload', () => {
+                track('pageview_end', {duration_ms: Date.now() - startTime});
+            });
+            
+            window.track = track;
+        })();
+        // Email capture form handler (article)
+        (function() {
+            const form = document.getElementById('email-form-article');
+            const messageEl = document.getElementById('email-message-article');
+            if (!form) return;
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = form.querySelector('input[name="email"]').value.trim();
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.textContent;
+                
+                if (!email || !email.includes('@')) {
+                    messageEl.innerHTML = '<span style="color: #dc3545;">❌ Bitte gültige E-Mail eingeben</span>';
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Wird gesendet...';
+                messageEl.textContent = '';
+
+                try {
+                    const res = await fetch('/api/email/subscribe', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            email,
+                            source: 'article_runpod-review',
+                            utm_source: 'organic',
+                            utm_medium: 'email_capture',
+                            utm_campaign: 'lead_magnet',
+                            utm_content: 'article_footer'
+                        })
+                    });
+                    const data = await res.json();
+                    
+                    if (data.status === 'subscribed' || data.status === 'confirmation_resent') {
+                        messageEl.innerHTML = '<span style="color: #28a745;">✅ ' + data.message + '</span>';
+                        form.reset();
+                        track('email_subscribe', {source: 'article_footer', article: 'runpod-review', email: email});
+                    } else if (data.status === 'already_subscribed') {
+                        messageEl.innerHTML = '<span style="color: #ffc107;">ℹ️ ' + data.message + '</span>';
+                    } else {
+                        messageEl.innerHTML = '<span style="color: #dc3545;">❌ ' + (data.error || data.message || 'Fehler') + '</span>';
+                    }
+                } catch (err) {
+                    messageEl.innerHTML = '<span style="color: #dc3545;">❌ Netzwerkfehler. Bitte erneut versuchen.</span>';
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+                }
+            });
+        })();
+    </script>
 </body>
 </html>

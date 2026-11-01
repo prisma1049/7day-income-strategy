@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 """
-Lightweight tracking redirect server for 7-Day Revenue Sprint
-Handles affiliate link clicks with tracking, serves static site, provides dashboard API
+Lightweight tracking server for 7-Day Revenue Sprint
+Provides dashboard API and serves static site. Click tracking via JS sendBeacon.
 """
 
 import os
 import json
-import hashlib
 import sqlite3
 from datetime import datetime, timezone
 from http.server import HTTPServer, SimpleHTTPRequestHandler
@@ -16,7 +15,7 @@ from pathlib import Path
 SITE_DIR = Path(__file__).parent
 DB_PATH = SITE_DIR / "tracking.db"
 
-# Affiliate programs config
+# Affiliate programs config (for dashboard display)
 AFFILIATE_PROGRAMS = {
     "mixo": {"name": "Mixo", "base_url": "https://mixo.io", "param": "ref", "rate": 0.50},
     "elevenlabs": {"name": "ElevenLabs", "base_url": "https://elevenlabs.io", "param": "via", "rate": 0.50},
@@ -33,7 +32,7 @@ ARTICLE_MAP = {
     "surfer-seo-review.html": "surfer_seo",
     "mixo-vs-carrd-vs-wix.html": "mixo_carrd_comparison",
     "elevenlabs-vs-speechify.html": "elevenlabs_speechify_comparison",
-    "runpod-review.html": "runpod_vast_comparison",
+    "runpod-vs-vast-vs-lambda.html": "runpod_vast_lambda_comparison",
     "content-framework.md": "framework",
     "editorial-calendar.md": "calendar",
 }
@@ -43,20 +42,8 @@ def get_db():
     conn.row_factory = sqlite3.Row
     return conn
 
-def log_click(program_key, article_slug, request):
+def log_click(program_key, article_slug, utm_source, utm_medium, utm_campaign, utm_content, ip_hash, user_agent, referrer):
     """Log click to database."""
-    ip = request.client_address[0]
-    ip_hash = hashlib.sha256(ip.encode()).hexdigest()[:16]
-    user_agent = request.headers.get('User-Agent', '')[:500]
-    referrer = request.headers.get('Referer', '')[:500]
-    
-    # Parse UTM params from query
-    query = parse_qs(urlparse(request.path).query)
-    utm_source = query.get('utm_source', [''])[0]
-    utm_medium = query.get('utm_medium', [''])[0]
-    utm_campaign = query.get('utm_campaign', [''])[0]
-    utm_content = query.get('utm_content', [article_slug])[0]
-    
     conn = get_db()
     conn.execute("""
         INSERT INTO clicks (timestamp, affiliate_program, article_slug, utm_source, utm_medium, utm_campaign, utm_content, ip_hash, user_agent, referrer)
@@ -135,11 +122,6 @@ class TrackingHandler(SimpleHTTPRequestHandler):
         parsed = urlparse(self.path)
         path = parsed.path
         
-        # Affiliate redirect endpoint: /go/<program>/<article_slug>
-        if path.startswith('/go/'):
-            self.handle_redirect(path, parsed.query)
-            return
-        
         # Dashboard API
         if path == '/api/dashboard':
             self.send_json(get_dashboard_data())
@@ -150,51 +132,40 @@ class TrackingHandler(SimpleHTTPRequestHandler):
             self.serve_dashboard()
             return
         
+        # Tracking endpoint (for JS sendBeacon)
+        if path == '/api/track':
+            content_length = int(self.headers.get('Content-Length', 0))
+            if content_length > 0:
+                body = self.rfile.read(content_length).decode('utf-8')
+                try:
+                    data = json.loads(body)
+                    ip = self.client_address[0]
+                    ip_hash = __import__('hashlib').sha256(ip.encode()).hexdigest()[:16]
+                    user_agent = self.headers.get('User-Agent', '')[:500]
+                    referrer = self.headers.get('Referer', '')[:500]
+                    
+                    log_click(
+                        data.get('program', ''),
+                        data.get('article', ''),
+                        data.get('utm_source', ''),
+                        data.get('utm_medium', ''),
+                        data.get('utm_campaign', ''),
+                        data.get('utm_content', ''),
+                        ip_hash,
+                        user_agent,
+                        referrer
+                    )
+                    self.send_response(204)
+                except Exception as e:
+                    self.send_response(400)
+                self.end_headers()
+            else:
+                self.send_response(204)
+                self.end_headers()
+            return
+        
         # Default: serve static files
         super().do_GET()
-    
-    def handle_redirect(self, path, query):
-        """Handle /go/<program>/<article_slug>?utm_* redirects."""
-        parts = path.split('/')
-        if len(parts) < 4:
-            self.send_error(404, "Invalid redirect path")
-            return
-        
-        program_key = parts[2]
-        article_slug = parts[3]
-        
-        if program_key not in AFFILIATE_PROGRAMS:
-            self.send_error(404, f"Unknown program: {program_key}")
-            return
-        
-        # Log the click
-        log_click(program_key, article_slug, self)
-        
-        # Build destination URL
-        program = AFFILIATE_PROGRAMS[program_key]
-        base_url = program["base_url"]
-        param = program["param"]
-        
-        # Parse incoming UTM params
-        utm_params = parse_qs(query)
-        
-        # Build outgoing URL with affiliate param + UTM
-        from urllib.parse import urlencode, urlunparse
-        outbound_params = {
-            param: "7day_sprint",
-            "utm_source": utm_params.get('utm_source', ['organic'])[0],
-            "utm_medium": utm_params.get('utm_medium', ['article'])[0],
-            "utm_campaign": utm_params.get('utm_campaign', ['7day_sprint'])[0],
-            "utm_content": utm_params.get('utm_content', [article_slug])[0],
-        }
-        
-        dest_url = f"{base_url}?{urlencode(outbound_params)}"
-        
-        # Redirect
-        self.send_response(302)
-        self.send_header('Location', dest_url)
-        self.send_header('Cache-Control', 'no-store')
-        self.end_headers()
     
     def serve_dashboard(self):
         """Serve the dashboard HTML."""
@@ -205,27 +176,27 @@ class TrackingHandler(SimpleHTTPRequestHandler):
         self.wfile.write(dashboard_html.encode('utf-8'))
     
     def send_json(self, data):
+        json_bytes = json.dumps(data).encode('utf-8')
         self.send_response(200)
-        self.send_header('Content-Type', 'application/json; charset=utf-8')
+        self.send_header('Content-Type', 'application/json')
         self.end_headers()
-        self.wfile.write(json.dumps(data, ensure_ascii=False).encode('utf-8'))
+        self.wfile.write(json_bytes)
     
     def generate_dashboard_html(self):
         data = get_dashboard_data()
         
-        # Build program cards
+        # Program cards
         program_cards = ""
-        for prog in AFFILIATE_PROGRAMS.values():
-            key = prog["name"].lower().replace(" ", "_").replace(".", "_")
-            clicks = next((c['clicks'] for c in data['clicks_by_program'] if c['affiliate_program'] == key), 0)
-            conv = next((c for c in data['conversions_by_program'] if c['affiliate_program'] == key), None)
+        for p_key, p_info in AFFILIATE_PROGRAMS.items():
+            clicks = next((c['clicks'] for c in data['clicks_by_program'] if c['affiliate_program'] == p_key), 0)
+            conv = next((c for c in data['conversions_by_program'] if c['affiliate_program'] == p_key), None)
             conversions = conv['conversions'] if conv else 0
             commission = conv['total_commission'] if conv else 0
             ctr = f"{(conversions/clicks*100):.1f}%" if clicks > 0 else "0%"
             
             program_cards += f"""
             <div class="card">
-                <h3>{prog['name']}</h3>
+                <h3>{p_info['name']}</h3>
                 <div class="metric"><span>Klicks</span><strong>{clicks}</strong></div>
                 <div class="metric"><span>Conversions</span><strong>{conversions}</strong></div>
                 <div class="metric"><span>CTR</span><strong>{ctr}</strong></div>
@@ -233,16 +204,29 @@ class TrackingHandler(SimpleHTTPRequestHandler):
             </div>
             """
         
-        # Recent clicks table
-        clicks_rows = ""
-        for c in data['recent_clicks'][:20]:
-            ts = c['timestamp'][:19].replace('T', ' ')
-            clicks_rows += f"<tr><td>{ts}</td><td>{c['affiliate_program']}</td><td>{c['article_slug']}</td><td>{c['utm_source']}/{c['utm_medium']}</td><td>{c['ip_hash']}</td></tr>"
-        
-        # Daily stats
+        # Daily stats rows
         daily_rows = ""
         for d in data['daily_stats']:
-            daily_rows += f"<tr><td>{d['date']}</td><td>{d['page_views']}</td><td>{d['unique_visitors']}</td><td>{d['total_clicks']}</td><td>{d['affiliate_clicks']}</td><td>{d['conversions']}</td><td>{d['commission_eur']:.2f} €</td></tr>"
+            daily_rows += f"<tr><td>{d['date']}</td><td>{d.get('page_views', 0)}</td><td>{d.get('unique_visitors', 0)}</td><td>{d.get('total_clicks', 0)}</td><td>{d.get('affiliate_clicks', 0)}</td><td>{d.get('conversions', 0)}</td><td>{d.get('commission_eur', 0):.2f} €</td></tr>"
+        if not daily_rows:
+            daily_rows = '<tr><td colspan="7">Keine Daten</td></tr>'
+        
+        # Recent clicks rows
+        clicks_rows = ""
+        for c in data['recent_clicks']:
+            ts = c['timestamp'][:19].replace('T', ' ')
+            source_medium = f"{c['utm_source']}/{c['utm_medium']}" if c['utm_source'] else "direct"
+            clicks_rows += f"<tr><td>{ts}</td><td>{c['affiliate_program']}</td><td>{c['article_slug']}</td><td>{source_medium}</td><td>{c['ip_hash']}</td></tr>"
+        if not clicks_rows:
+            clicks_rows = '<tr><td colspan="5">Keine Klicks</td></tr>'
+        
+        # Recent conversions rows
+        conv_rows = ""
+        for c in data['recent_conversions']:
+            ts = c['timestamp'][:19].replace('T', ' ')
+            conv_rows += f"<tr><td>{ts}</td><td>{c['affiliate_program']}</td><td>{c['amount_eur']:.2f} €</td><td>{c['commission_eur']:.2f} €</td><td>{c['status']}</td></tr>"
+        if not conv_rows:
+            conv_rows = '<tr><td colspan="5">Keine Conversions</td></tr>'
         
         totals = data['totals']
         
@@ -286,14 +270,16 @@ class TrackingHandler(SimpleHTTPRequestHandler):
     
     <div class="section">
         <h2>📈 Affiliate-Programme</h2>
-        <div class="grid">{program_cards}</div>
+        <div class="grid">
+            {program_cards}
+        </div>
     </div>
     
     <div class="section">
         <h2>📅 Tägliche Statistiken (letzte 7 Tage)</h2>
         <table>
             <thead><tr><th>Datum</th><th>Page Views</th><th>Unique Visitors</th><th>Total Klicks</th><th>Affiliate Klicks</th><th>Conversions</th><th>Provision</th></tr></thead>
-            <tbody>{daily_rows or '<tr><td colspan="7">Keine Daten</td></tr>'}</tbody>
+            <tbody>{daily_rows}</tbody>
         </table>
     </div>
     
@@ -301,7 +287,7 @@ class TrackingHandler(SimpleHTTPRequestHandler):
         <h2>🖱️ Letzte Klicks</h2>
         <table>
             <thead><tr><th>Zeitstempel</th><th>Programm</th><th>Artikel</th><th>Source/Medium</th><th>IP Hash</th></tr></thead>
-            <tbody>{clicks_rows or '<tr><td colspan="5">Keine Klicks</td></tr>'}</tbody>
+            <tbody>{clicks_rows}</tbody>
         </table>
     </div>
     
@@ -309,19 +295,11 @@ class TrackingHandler(SimpleHTTPRequestHandler):
         <h2>💰 Letzte Conversions</h2>
         <table>
             <thead><tr><th>Zeitstempel</th><th>Programm</th><th>Betrag</th><th>Provision</th><th>Status</th></tr></thead>
-            <tbody>
-"""
-        for c in data['recent_conversions']:
-            ts = c['timestamp'][:19].replace('T', ' ')
-            program_cards += f"<tr><td>{ts}</td><td>{c['affiliate_program']}</td><td>{c['amount_eur']:.2f} €</td><td>{c['commission_eur']:.2f} €</td><td>{c['status']}</td></tr>"
-        
-        return dashboard_html + """
-            </tbody>
+            <tbody>{conv_rows}</tbody>
         </table>
     </div>
     
     <script>
-        // Auto-refresh every 30 seconds
         setInterval(() => location.reload(), 30000);
     </script>
 </body>
@@ -333,7 +311,7 @@ def run_server(port=8080):
     print(f"Server running on http://0.0.0.0:{port}")
     print(f"Dashboard: http://0.0.0.0:{port}/dashboard")
     print(f"API: http://0.0.0.0:{port}/api/dashboard")
-    print(f"Affiliate redirects: http://0.0.0.0:{port}/go/<program>/<article>")
+    print(f"Tracking endpoint: http://0.0.0.0:{port}/api/track")
     server.serve_forever()
 
 if __name__ == "__main__":

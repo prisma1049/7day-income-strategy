@@ -6,6 +6,8 @@ Stores clicks, conversions, revenue data for affiliate tracking
 
 import sqlite3
 import os
+import json
+import hashlib
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -135,7 +137,7 @@ ARTICLE_SLUGS = {
     "surfer-seo-review.html": "surfer_seo",
     "mixo-vs-carrd-vs-wix.html": "mixo_carrd_comparison",
     "elevenlabs-vs-speechify.html": "elevenlabs_speechify_comparison",
-    "runpod-review.html": "runpod_vast_comparison",
+    "runpod-vs-vast-vs-lambda.html": "runpod_vast_lambda_comparison",
 }
 
 def init_db():
@@ -303,8 +305,8 @@ def update_daily_stats():
         today,
         page_views,
         unique_visitors,
-        stats[2] or 0,
-        stats[3] or 0,
+        stats[1] or 0,      # total_clicks
+        stats[2] or 0,      # affiliate_clicks
         conv_stats[0] or 0,
         conv_stats[1] or 0,
         conv_stats[1] or 0

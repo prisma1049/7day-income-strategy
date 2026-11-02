@@ -149,6 +149,7 @@ ARTICLE_SLUGS = {
     "together-vs-replicate-vs-fireworks.html": "together_replicate_fireworks_comparison",
     "surfer-seo-vs-clearscope-vs-marketmuse.html": "surfer_clearscope_marketmuse_comparison",
     "carrd-review.html": "carrd",
+    "together-ai-review.html": "together_ai",
 }
 
 def init_db():

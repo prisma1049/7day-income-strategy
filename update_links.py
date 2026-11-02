@@ -16,7 +16,8 @@ ARTICLE_AFFILIATES = {
     "surfer-seo-review.html": ["surfer_seo"],
     "mixo-vs-carrd-vs-wix.html": ["mixo", "carrd"],
     "elevenlabs-vs-speechify.html": ["elevenlabs"],
-    "runpod-review.html": ["runpod", "vast_ai"],
+    "runpod-vs-vast-vs-lambda.html": ["runpod", "vast_ai"],
+    "together-ai-review.html": ["together_ai"],
 }
 
 def get_article_slug(filename):
@@ -71,10 +72,26 @@ def update_article(filepath, affiliates):
                 f'href="{tracked_url}"',
                 content
             )
+        elif prog == "together_ai":
+            content = re.sub(
+                r'href=["\']https?://api\.together\.xyz[^"\']*["\']',
+                f'href="{tracked_url}"',
+                content
+            )
+            content = re.sub(
+                r'href=["\']https?://together\.ai[^"\']*["\']',
+                f'href="{tracked_url}"',
+                content
+            )
+            content = re.sub(
+                r'href=["\']https?://together\.xyz[^"\']*["\']',
+                f'href="{tracked_url}"',
+                content
+            )
     
     # Also add tracking to any generic "Affiliate-Link" or CTA buttons
     content = re.sub(
-        r'href=["\']([^"\']*(?:mixo|elevenlabs|runpod|surferseo|carrd|vast\.ai)[^"\']*)["\']',
+        r'href=["\']([^"\']*(?:mixo|elevenlabs|runpod|surferseo|carrd|vast\.ai|together\.ai|together\.xyz|api\.together\.xyz)[^"\']*)["\']',
         lambda m: f'href="{build_tracked_url(m.group(1).split(".")[0].replace("https://", "").replace("http://", ""), article_slug)}"' if any(p in m.group(1) for p in affiliates) else m.group(0),
         content
     )
@@ -95,7 +112,7 @@ def main():
     if index_path.exists():
         content = index_path.read_text(encoding='utf-8')
         # Update any external affiliate links in index
-        for prog in ["mixo", "elevenlabs", "runpod", "surfer_seo"]:
+        for prog in ["mixo", "elevenlabs", "runpod", "surfer_seo", "together_ai"]:
             tracked = build_tracked_url(prog, "index")
             content = re.sub(
                 rf'href=["\']https?://{prog.replace("_", "")}\.[^"\']*["\']',

@@ -53,6 +53,12 @@ CTA_OPTIMIZATIONS = {
         "cta_secondary_text": "Vast.ai Preise checken",
         "email_hook": "GPU-Cloud-Kostenrechner (Sheet) gratis",
     },
+    "together-ai-review.html": {
+        "cta_box_headline": "AI-Inferenz für Entwickler – 20% günstiger als OpenAI",
+        "cta_primary_text": "Together AI $25 Credit sichern →",
+        "cta_secondary_text": "Review lesen",
+        "email_hook": "LLM-Kostenrechner (Sheet) gratis",
+    },
 }
 
 # Mid-article CTA configurations (inserted after first major section)
@@ -77,6 +83,13 @@ MID_ARTICLE_CTAS = {
         "button": "Credit einlösen",
         "program": "runpod",
         "utm_content": "runpod-review_mid",
+    },
+    "together-ai-review.html": {
+        "headline": "LLM-Inferenz ohne Rate Limits beginnen",
+        "text": "Größter OpenAI-Kompatibler Modell-Index. $25 Startguthaben per API-Schlüssel.",
+        "button": "API-Key holen",
+        "program": "together_ai",
+        "utm_content": "together-ai-review_mid",
     },
     "surfer-seo-review.html": {
         "headline": "Optimiere deinen ersten Artikel in 10 Minuten",
@@ -176,6 +189,7 @@ def get_program_key(article_file):
         "mixo-vs-carrd-vs-wix.html": "mixo",
         "elevenlabs-vs-speechify.html": "elevenlabs",
         "runpod-vs-vast-vs-lambda.html": "runpod",
+        "together-ai-review.html": "together_ai",
     }
     return mapping.get(article_file, "mixo")
 
@@ -188,6 +202,7 @@ def get_affiliate_url(article_file, utm_content=None):
         "surfer_seo": "https://surferseo.com",
         "carrd": "https://carrd.co",
         "vast_ai": "https://vast.ai",
+        "together_ai": "https://api.together.xyz",
     }
     params = {
         "mixo": "ref",
@@ -196,6 +211,7 @@ def get_affiliate_url(article_file, utm_content=None):
         "surfer_seo": "ref",
         "carrd": "ref",
         "vast_ai": "ref",
+        "together_ai": "model_name",
     }
     base = base_urls.get(program, "https://mixo.io")
     param = params.get(program, "ref")

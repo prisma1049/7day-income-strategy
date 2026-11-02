@@ -23,6 +23,7 @@ AFFILIATE_PROGRAMS = {
     "surfer_seo": {"name": "Surfer SEO", "base_url": "https://surferseo.com", "param": "ref", "rate": 0.30},
     "carrd": {"name": "Carrd", "base_url": "https://carrd.co", "param": "ref", "rate": 0.30},
     "vast_ai": {"name": "Vast.ai", "base_url": "https://vast.ai", "param": "ref", "rate": 0.10},
+    "together_ai": {"name": "Together AI", "base_url": "https://api.together.xyz", "param": "model_name", "rate": 0.20},
 }
 
 ARTICLE_MAP = {
@@ -33,6 +34,7 @@ ARTICLE_MAP = {
     "mixo-vs-carrd-vs-wix.html": "mixo_carrd_comparison",
     "elevenlabs-vs-speechify.html": "elevenlabs_speechify_comparison",
     "runpod-vs-vast-vs-lambda.html": "runpod_vast_lambda_comparison",
+    "together-vs-replicate-vs-fireworks.html": "together_replicate_fireworks_comparison",
     "content-framework.md": "framework",
     "editorial-calendar.md": "calendar",
 }

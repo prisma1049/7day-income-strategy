@@ -127,6 +127,14 @@ AFFILIATE_PROGRAMS = {
         "base_url": "https://vast.ai",
         "affiliate_param": "ref",
         "description": "GPU Marketplace - 10% commission"
+    },
+    "together_ai": {
+        "name": "Together AI",
+        "commission_rate": 0.20,
+        "cookie_days": 120,
+        "base_url": "https://api.together.xyz",
+        "affiliate_param": "model_name",
+        "description": "AI inference platform for developers - 20% recurring commission on API usage"
     }
 }
 
@@ -138,6 +146,9 @@ ARTICLE_SLUGS = {
     "mixo-vs-carrd-vs-wix.html": "mixo_carrd_comparison",
     "elevenlabs-vs-speechify.html": "elevenlabs_speechify_comparison",
     "runpod-vs-vast-vs-lambda.html": "runpod_vast_lambda_comparison",
+    "together-vs-replicate-vs-fireworks.html": "together_replicate_fireworks_comparison",
+    "surfer-seo-vs-clearscope-vs-marketmuse.html": "surfer_clearscope_marketmuse_comparison",
+    "carrd-review.html": "carrd",
 }
 
 def init_db():
@@ -282,7 +293,7 @@ def update_daily_stats():
         SELECT 
             COUNT(DISTINCT date(timestamp)) as days,
             COUNT(*) as total_clicks,
-            SUM(CASE WHEN affiliate_program IN ('mixo', 'elevenlabs', 'runpod', 'surfer_seo', 'carrd', 'vast_ai') THEN 1 ELSE 0 END) as affiliate_clicks
+            SUM(CASE WHEN affiliate_program IN ('mixo', 'elevenlabs', 'runpod', 'surfer_seo', 'carrd', 'vast_ai', 'together_ai') THEN 1 ELSE 0 END) as affiliate_clicks
         FROM clicks
         WHERE date(timestamp) = ?
     """, (today,)).fetchone()
@@ -322,6 +333,6 @@ if __name__ == "__main__":
     
     print("\nGenerating sample affiliate URLs:")
     for article, slug in ARTICLE_SLUGS.items():
-        for prog_key in ["mixo", "elevenlabs", "runpod"]:
+        for prog_key in ["mixo", "elevenlabs", "runpod", "together_ai"]:
             url = generate_affiliate_url(prog_key, slug)
             print(f"  {article} -> {prog_key}: {url}")
